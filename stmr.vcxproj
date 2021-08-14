@@ -158,9 +158,9 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="functions.h" />
-    <ClInclude Include="stmrLib.h" />
     <ClInclude Include="operators.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="stmrLib.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />

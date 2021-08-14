@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "functions.h"
+#include <iterator>
 #include "stmrLib.h"
 
 namespace stmr
@@ -23,7 +24,7 @@ namespace stmr
     auto iteratorAt(std::deque<T>& arr, unsigned int index)
     {
         auto it = arr.begin();
-        std::next(it, index);
+        std::advance(it, index);
         return it;
     }
 

@@ -11,3 +11,4 @@ Version 1.0 is supposed to have following features:
 - support of most of the important standard math.h lib functions
 - stability
 - module for converting pure math string (like in the example above) into pretty mathematical expression (like you can make in MS Word using formulas) (? - maybe this feature will be in a separate branch or smth)
+- full documentation

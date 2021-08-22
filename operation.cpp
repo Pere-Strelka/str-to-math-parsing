@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "functions.h"
-#include "stmrLib.h"
+#include "stmpLib.h"
 
-namespace stmr
+namespace stmp
 {
     Operation::Operation(double num1, double num2, Operator op)
     {
@@ -50,61 +50,83 @@ namespace stmr
         is1num = false;
     }
 
-    long double answerOfOperation(unsigned int index, const MathProblem& it)
-    {
-        return it.getElement(index).answer(it);
-    }
-
     long double Operation::answer(const MathProblem& it) const
     {
-        long double(&ans)(unsigned int, const MathProblem&) = answerOfOperation;
+        auto ans = [&it] (unsigned int index) { 
+            return it.getElement(index).answer(it);
+        };
         switch (m_operator) {
         case Operator::MULTIPLY:
             if (is1num && is2num)
                 return m_number1 * m_number2;
             else if (is1num)
-                return m_number1 * ans(m_index2, it);
+                return m_number1 * ans(m_index2);
             else if (is2num)
-                return ans(m_index1, it) * m_number2;
+                return ans(m_index1) * m_number2;
             else
-                return ans(m_index1, it) * ans(m_index2, it);
+                return ans(m_index1) * ans(m_index2);
         case Operator::DIVIDE:
             if (is1num && is2num)
                 return m_number1 / m_number2;
             else if (is1num)
-                return m_number1 / ans(m_index2, it);
+                return m_number1 / ans(m_index2);
             else if (is2num)
-                return ans(m_index1, it) / m_number2;
+                return ans(m_index1) / m_number2;
             else
-                return ans(m_index1, it) / ans(m_index2, it);
+                return ans(m_index1) / ans(m_index2);
         case Operator::ADD:
             if (is1num && is2num)
                 return m_number1 + m_number2;
             else if (is1num)
-                return m_number1 + ans(m_index2, it);
+                return m_number1 + ans(m_index2);
             else if (is2num)
-                return ans(m_index1, it) + m_number2;
+                return ans(m_index1) + m_number2;
             else
-                return ans(m_index1, it) + ans(m_index2, it);
+                return ans(m_index1) + ans(m_index2);
         case Operator::SUBTRACT:
             if (is1num && is2num)
                 return m_number1 - m_number2;
             else if (is1num)
-                return m_number1 - ans(m_index2, it);
+                return m_number1 - ans(m_index2);
             else if (is2num)
-                return ans(m_index1, it) - m_number2;
+                return ans(m_index1) - m_number2;
             else
-                return ans(m_index1, it) - ans(m_index2, it);
+                return ans(m_index1) - ans(m_index2);
+        case Operator::SQRT:
+            if (is1num)
+                return sqrt(m_number1);
+            else
+                return sqrt(ans(m_index1));
+        case Operator::SQR:
+            if (is1num)
+                return pow(m_number1, 2);
+            else
+                return pow(ans(m_index1), 2);
+        case Operator::CBRT:
+            if (is1num)
+                return cbrt(m_number1);
+            else
+                return cbrt(ans(m_index1));
+        case Operator::EXP:
+            if (is1num)
+                return exp(m_number1);
+            else
+                return exp(ans(m_index1));
+        case Operator::LOGARITHM:
+            if (is1num)
+                return log(m_number1);
+            else
+                return log(ans(m_index1));
         case Operator::NEGATE:
             if (is1num)
                 return -m_number1;
             else
-                return -(ans(m_index1, it));
+                return -(ans(m_index1));
         case Operator::NONE:
             if (is1num)
                 return m_number1;
             else
-                return ans(m_index1, it);
+                return ans(m_index1);
         }
     }
 }

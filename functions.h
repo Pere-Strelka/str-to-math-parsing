@@ -1,8 +1,8 @@
 #pragma once
 
-#include "stmrLib.h"
+#include "stmpLib.h"
 
-namespace stmr
+namespace stmp
 {
 	std::vector<Operation> findFunctions(std::string& str, unsigned int& opCount);
 	std::vector<Operation> findBraces(std::string& str, unsigned int& opCount);

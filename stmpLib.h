@@ -1,9 +1,9 @@
 #pragma once
 
-#ifdef STMR_EXPORTS
-#define STMR_API __declspec(dllexport)
+#ifdef STMP_EXPORTS
+#define STMP_API __declspec(dllexport)
 #else
-#define STMR_API __declspec(dllimport)
+#define STMP_API __declspec(dllimport)
 #endif
 
 #include <vector>
@@ -12,25 +12,27 @@
 #include <locale>
 #include "operators.h"
 
-namespace stmr
+namespace stmp
 {
-    class STMR_API Operation;
+    class STMP_API Operation;
 
-    class STMR_API MathProblem
+    class STMP_API MathProblem
     {
     public:
         MathProblem() {}
         MathProblem(std::string str, unsigned int plug = 0);
         MathProblem(std::vector<Operation>& arr);
-        long double solve();
-        long double answer() { return m_answer; }
+        long double answer() { return m_answerReady ? m_answer : this->solve(); }
         Operation getElement(int index) const;
+
     private:
+        long double solve();
+        bool m_answerReady = false;
         std::vector<Operation> m_array;
         long double m_answer;
     };
 
-    class STMR_API Operation
+    class STMP_API Operation
     {
     public:
         Operation() {}
@@ -40,13 +42,15 @@ namespace stmr
         Operation(unsigned int num1, unsigned int num2, Operator op);
         Operation(double num, Operator func);
         Operation(unsigned int num, Operator func);
-        long double answer(const MathProblem& it) const;
+
+        friend class STMP_API MathProblem;
+
     private:
+        long double answer(const MathProblem& it) const;
         double m_number1, m_number2;
         unsigned int m_index1, m_index2;
         bool is1num, is2num;
         Operator m_operator;
-        double m_answer;
     };
 
 }

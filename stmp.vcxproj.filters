@@ -21,7 +21,7 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stmrLib.h">
+    <ClInclude Include="stmpLib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="operators.h">

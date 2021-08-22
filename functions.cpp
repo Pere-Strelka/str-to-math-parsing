@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "functions.h"
 #include <iterator>
-#include "stmrLib.h"
+#include "stmpLib.h"
 
-namespace stmr
+namespace stmp
 {
     // READ THE CODE IN FOLLOWING ORDER
     std::vector<Operation> findOperations(std::string& str, unsigned int& opCount);
@@ -32,6 +32,16 @@ namespace stmr
     {
         if (function == "negate")
             return Operator::NEGATE;
+        else if (function == "sqrt")
+            return Operator::SQRT;
+        else if (function == "sqr")
+            return Operator::SQR;
+        else if (function == "cbrt")
+            return Operator::CBRT;
+        else if (function == "exp")
+            return Operator::EXP;
+        else if (function == "log")
+            return Operator::LOGARITHM;
         else
             return Operator::NONE;
     }
@@ -207,10 +217,9 @@ namespace stmr
                 }
                 else {
                     // there may be '*' and '/' on the right
-                    for (rightSymbolOfOperation = i + 1; str[rightSymbolOfOperation] != '/' &&
-                        str[rightSymbolOfOperation] != '*' &&
-                        str[rightSymbolOfOperation] != '-' &&
-                        str[rightSymbolOfOperation] != '+' &&
+                    for (rightSymbolOfOperation = i + 1; 
+                        str[rightSymbolOfOperation] != '/' && str[rightSymbolOfOperation] != '*' &&
+                        str[rightSymbolOfOperation] != '-' && str[rightSymbolOfOperation] != '+' &&
                         rightSymbolOfOperation < str.length(); rightSymbolOfOperation++) {
                     }
                     if (rightSymbolOfOperation != str.length() - 1)

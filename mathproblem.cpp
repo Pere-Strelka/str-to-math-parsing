@@ -1,11 +1,13 @@
 #include "pch.h"
-#include "stmrLib.h"
+#include "stmpLib.h"
 #include "functions.h"
 
-namespace stmr
+namespace stmp
 {
     MathProblem::MathProblem(std::string str, unsigned int plug)
     {
+        if (str.empty())
+            return;
         m_array = findOperations(str, plug);
     }
 
@@ -18,11 +20,14 @@ namespace stmr
     {
         const MathProblem& it = *this;
         m_answer = m_array[m_array.size() - 1].answer(it);
+        m_answerReady = true;
         return m_answer;
     }
 
     Operation MathProblem::getElement(int index) const
     {
+        if (index < 0 || index >= m_array.size())
+            throw std::out_of_range(std::string("Index out of range"));
         return m_array[index];
     }
 }

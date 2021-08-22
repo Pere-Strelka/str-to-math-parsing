@@ -1,5 +1,5 @@
-# str-to-math-recognition (stmr)
-This is a dll project. It contains class MathProblem which can take a string and convert it to the math using class Operation and enum class Operator. Math expression requirements:
+# str-to-math-parsing (stmp)
+This is a dll project. It contains class MathProblem which can take a string and parse it to the math. Math expression requirements:
 - no spaces
 - only digits, signs of mathematical actions (+, -, /, *) and some functions (e.g. 'negate' for negative numbers)
 

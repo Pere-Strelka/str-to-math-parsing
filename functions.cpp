@@ -45,4 +45,29 @@ namespace stmp
         else
             return Operator::NONE;
     }
+
+    std::string makeSpacesOnly(const std::string &str)
+    {
+        std::string strCopy = str;
+        for (int i = 1; i < strCopy.size(); i++)
+        {
+            if (strCopy[i] == '+' || strCopy[i] == '-' || strCopy[i] == '/' || strCopy[i] == '*')
+            {
+                strCopy.insert(strCopy.begin()+i+1, ' ');
+                strCopy.insert(strCopy.begin()+i, ' ');
+                i++;
+            }            
+        }
+        return strCopy;
+    }
+
+    std::string makeSpacesAndNoNegate(const std::string &str)
+    {
+        std::string strCopy = makeSpacesOnly(str);
+        for (int i = 1; i < strCopy.size(); i++)
+            if (strCopy[i] == 'n')
+                if (strCopy.substr(i, 6) == "negate")
+                    strCopy.replace(i, 6, 1, '-');           
+        return strCopy;
+    }
 }

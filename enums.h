@@ -16,8 +16,10 @@ namespace stmp {
         NONE
     };
 
-    enum class Format {
+    enum class STMP_API Format {
         None,
+        SpacesOnly,
+        SpacesAndNoNegate
     };
 }
 

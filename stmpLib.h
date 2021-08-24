@@ -10,6 +10,7 @@
 #include <string>
 #include <deque>
 #include <locale>
+#include <iterator>
 #include "operators.h"
 
 namespace stmp
@@ -20,14 +21,21 @@ namespace stmp
     {
     public:
         MathProblem() {}
-        MathProblem(std::string str, unsigned int plug = 0);
-        MathProblem(std::vector<Operation>& arr);
-        long double answer() { return m_answerReady ? m_answer : this->solve(); }
+        MathProblem(std::string str);
+        long double answer() { return m_answerReady ? m_answer : solve(); }
         Operation getElement(int index) const;
+        std::string getString() const { return m_str; }
 
     private:
         long double solve();
+        std::vector<Operation> findOperations(std::string& str, unsigned int& opCount);
+        std::vector<Operation> findBraces(std::string& str, unsigned int& opCount);
+        std::vector<Operation> findFunctions(std::string& str, unsigned int& opCount);      
+        template <class T>
+        auto iteratorAt(std::deque<T>& arr, unsigned int index);
+
         bool m_answerReady = false;
+        std::string m_str;
         std::vector<Operation> m_array;
         long double m_answer;
     };

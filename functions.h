@@ -4,8 +4,10 @@
 
 namespace stmp
 {
-	std::vector<Operation> findFunctions(std::string& str, unsigned int& opCount);
-	std::vector<Operation> findBraces(std::string& str, unsigned int& opCount);
-	std::vector<Operation> findOperations(std::string& str, unsigned int& opCount);
+    void operator+=(std::vector<Operation, std::allocator<Operation>> &first, 
+                    std::vector<Operation, std::allocator<Operation>> second);
+
+	Operator defineOperator(std::string& op);
+	Operator defineOperator(char op);
 }
 

@@ -27,6 +27,14 @@ namespace stmp
         return m_array[index];
     }
 
+    std::string MathProblem::getString(Format format) const
+    {
+        switch (format) {
+            default:
+                return m_str;
+        }
+    }
+
     template <class T>
     auto MathProblem::iteratorAt(std::deque<T>& arr, unsigned int index)
     {

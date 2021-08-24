@@ -11,7 +11,7 @@
 #include <deque>
 #include <locale>
 #include <iterator>
-#include "operators.h"
+#include "enums.h"
 
 namespace stmp
 {
@@ -24,7 +24,7 @@ namespace stmp
         MathProblem(std::string str);
         long double answer() { return m_answerReady ? m_answer : solve(); }
         Operation getElement(int index) const;
-        std::string getString() const { return m_str; }
+        std::string getString(Format format = Format::None) const;
 
     private:
         long double solve();

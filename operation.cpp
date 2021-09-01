@@ -50,6 +50,22 @@ namespace stmp
         is1num = false;
     }
 
+    Operation::Operation(double num, int power, Operator func)
+    {
+        m_number1 = num;
+        m_power = power;
+        m_operator = func;
+        is1num = true;
+    }
+
+    Operation::Operation(unsigned int num, int power, Operator func)
+    {
+        m_index1 = num;
+        m_power = power;
+        m_operator = func;
+        is1num = false;
+    }
+
     long double Operation::answer(const MathProblem& it) const
     {
         auto ans = [&it] (unsigned int index) { 
@@ -117,6 +133,11 @@ namespace stmp
                 return log(m_number1);
             else
                 return log(ans(m_index1));
+        case Operator::POWER:
+            if(is1num)
+                return pow(m_number1, m_power);
+            else
+                return pow(ans(m_index1), m_power);
         case Operator::NEGATE:
             if (is1num)
                 return -m_number1;

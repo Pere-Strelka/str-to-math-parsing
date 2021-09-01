@@ -27,12 +27,14 @@ namespace stmp
         std::string getString(Format format = Format::None) const;
 
     private:
-        long double solve();
-        std::vector<Operation> findOperations(std::string& str, unsigned int& opCount);
-        std::vector<Operation> findBraces(std::string& str, unsigned int& opCount);
-        std::vector<Operation> findFunctions(std::string& str, unsigned int& opCount);      
+        long double solve();   
+        
         template <class T>
         auto iteratorAt(std::deque<T>& arr, unsigned int index);
+        std::vector<Operation> findOperations(std::string& str, unsigned int& opCount); // string will be changed during execution of the function
+        std::vector<Operation> findBraces(std::string& str, unsigned int& opCount); // string will be changed during execution of the function
+        std::vector<Operation> findFunctions(std::string& str, unsigned int& opCount); // string will be changed during execution of the function
+        Operation power(const std::string &pow, unsigned int &opCount, std::vector<Operation> &array);
 
         bool m_answerReady = false;
         std::string m_str;
@@ -50,13 +52,17 @@ namespace stmp
         Operation(unsigned int num1, unsigned int num2, Operator op);
         Operation(double num, Operator func);
         Operation(unsigned int num, Operator func);
+        
 
         friend class STMP_API MathProblem;
 
     private:
+        Operation(unsigned int num, int power, Operator func = Operator::POWER);
+        Operation(double num, int power, Operator func = Operator::POWER);
         long double answer(const MathProblem& it) const;
         double m_number1, m_number2;
         unsigned int m_index1, m_index2;
+        int m_power;
         bool is1num, is2num;
         Operator m_operator;
     };

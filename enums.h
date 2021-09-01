@@ -12,6 +12,7 @@ namespace stmp {
         CBRT,
         EXP,
         LOGARITHM,
+        POWER,
         NEGATE,
         NONE
     };

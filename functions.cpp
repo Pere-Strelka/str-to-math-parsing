@@ -14,6 +14,10 @@ namespace stmp
         }
     }
 
+    void operator+=(std::vector<Operation, std::allocator<Operation>> &first, 
+                    Operation second)
+    { first.push_back(second); }
+
     Operator defineOperator(std::string& op)
     {
         if (op == "negate")
@@ -28,6 +32,8 @@ namespace stmp
             return Operator::EXP;
         else if (op == "log")
             return Operator::LOGARITHM;
+        else if (op == "pow")
+            return Operator::POWER;
         else
             return Operator::NONE;
     }

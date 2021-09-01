@@ -4,7 +4,7 @@
 
 namespace stmp
 {
-    MathProblem::MathProblem(std::string str) : m_str{ str}
+    MathProblem::MathProblem(std::string str) : m_str{ str }
     {
         if (str.empty())
             return;
@@ -30,8 +30,12 @@ namespace stmp
     std::string MathProblem::getString(Format format) const
     {
         switch (format) {
-            default:
-                return m_str;
+        case Format::SpacesOnly:
+            return makeSpacesOnly(m_str);
+        case Format::SpacesAndNoNegate:
+            return makeSpacesAndNoNegate(m_str);
+        default:
+            return m_str;
         }
     }
 
@@ -46,8 +50,8 @@ namespace stmp
     std::vector<Operation> MathProblem::findOperations(std::string& str, unsigned int& opCount)
     {
         std::vector<Operation> array;
-        array += std::vector<Operation>(findFunctions(str, opCount));
-        array += std::vector<Operation>(findBraces(str, opCount));
+        array += findFunctions(str, opCount);
+        array += findBraces(str, opCount);
 
         for (int i = 1; i < str.length(); i++) {
             if (str[i] == '*' || str[i] == '/') {
@@ -75,8 +79,7 @@ namespace stmp
                     // cycle again (there cant be '*' and '/' on the left because all of them already were replaced with {}
                     for (leftSymbolOfOperation = i - 1; 
                         str[leftSymbolOfOperation] != '-' && str[leftSymbolOfOperation] != '+' &&
-                        leftSymbolOfOperation > 0; leftSymbolOfOperation--) {
-                    }
+                        leftSymbolOfOperation > 0; leftSymbolOfOperation--) {}
 
                     // here we need to make variable one point more if it represents some operator's index ('-', '+')
                     if (leftSymbolOfOperation != 0)
@@ -95,8 +98,7 @@ namespace stmp
                 if (str[i + 1] == '{') {
                     // cycle is needed to initialize rightSymbolOfOperation variable
                     for (rightSymbolOfOperation = i + 1; 
-                        str[rightSymbolOfOperation] != '}' && rightSymbolOfOperation < str.length(); rightSymbolOfOperation++) {
-                    }
+                        str[rightSymbolOfOperation] != '}' && rightSymbolOfOperation < str.length(); rightSymbolOfOperation++) {}
                     std::string strCopy = str;
 
                     // removing right excess symbols first, then left and converting to int (it's index)
@@ -108,8 +110,7 @@ namespace stmp
                     for (rightSymbolOfOperation = i + 1; 
                         str[rightSymbolOfOperation] != '/' && str[rightSymbolOfOperation] != '*' &&
                         str[rightSymbolOfOperation] != '-' && str[rightSymbolOfOperation] != '+' &&
-                        rightSymbolOfOperation < str.length(); rightSymbolOfOperation++) {
-                    }
+                        rightSymbolOfOperation < str.length(); rightSymbolOfOperation++) {}
                     if (rightSymbolOfOperation != str.length() - 1)
                         rightSymbolOfOperation--;
                     std::string strCopy = str;
@@ -173,8 +174,7 @@ namespace stmp
                 if (str[i + 1] == '{') {               // if there is another operation on the right...
                     // we need to count only right symbol for this
                     for (rightSymbolOfOperation = i + 1; str[rightSymbolOfOperation] != '}' &&
-                        rightSymbolOfOperation < str.length(); rightSymbolOfOperation++) {
-                    }
+                        rightSymbolOfOperation < str.length(); rightSymbolOfOperation++) {}
                     std::string strCopy = str;
 
                     // removing right excess symbols first, then left and converting to int (it's index)
@@ -185,8 +185,7 @@ namespace stmp
                     // we need to count only right symbol for this
                     for (rightSymbolOfOperation = i + 1; str[rightSymbolOfOperation] != '-' &&
                         str[rightSymbolOfOperation] != '+' &&
-                        rightSymbolOfOperation < str.length(); rightSymbolOfOperation++) {
-                    }
+                        rightSymbolOfOperation < str.length(); rightSymbolOfOperation++) {}
 
                     // this is for variant when cycle stops on '-' or '*' - then we need to step back
                     if (rightSymbolOfOperation != str.length() - 1)
@@ -294,8 +293,7 @@ namespace stmp
                 // but here we do also add rightSymbolOfFunction
                 for (rightSymbolOfFunction = i;
                     std::islower(strCopy[rightSymbolOfFunction]) && rightSymbolOfFunction < strCopy.length();
-                    rightSymbolOfFunction++) {
-                }
+                    rightSymbolOfFunction++) {}
 
                 if (rightSymbolOfFunction != strCopy.length() - 1)
                     rightSymbolOfFunction--;
@@ -322,7 +320,7 @@ namespace stmp
 
                 // sending the problem inside the function's braces into findOperations()
                 strCopy.erase(rightSymbolOfOperation, strCopy.length() - rightSymbolOfOperation).erase(0, rightSymbolOfFunction + 2);
-                arr += std::vector<Operation>(findOperations(strCopy, opCount));
+                arr += findOperations(strCopy, opCount);
                 arr.push_back(Operation(opCount - 1, op));
 
                 // now we're replacing read function with {opCount}

@@ -60,5 +60,4 @@ namespace stmp
         bool is1num, is2num;
         Operator m_operator;
     };
-
 }

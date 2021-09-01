@@ -47,6 +47,27 @@ namespace stmp
         return it;
     }
 
+    Operation MathProblem::power(const std::string &pow, unsigned int &opCount, std::vector<Operation> &array)
+    {
+        unsigned int i;
+        // increment i until pow[i] is comma
+        for (i = 0; i < pow.length() && pow[i] != ','; i++) {}
+        if (i == pow.length())
+            throw std::exception("Invalid Operation::power() usage: no comma's detected");
+
+        int power = std::stoi(pow.substr(i + 1, pow.length() - i - 1));
+
+        for (int j = 0; j < i; j++) {
+            if (pow[j] == '-' || pow[j] == '+' || pow[j] == '/' || pow[j] == '*' || std::islower(pow[j])) {        
+                std::string str = pow.substr(0, i);
+                array += findOperations(str, opCount);
+                return Operation(opCount-1, power, Operator::POWER);
+            }             
+        }
+        double num = std::stod(pow.substr(0, i));
+        return Operation(num, power, Operator::POWER);
+    }
+
     std::vector<Operation> MathProblem::findOperations(std::string& str, unsigned int& opCount)
     {
         std::vector<Operation> array;
@@ -318,10 +339,15 @@ namespace stmp
                 func.erase(rightSymbolOfFunction + 1, strCopy.length() - rightSymbolOfFunction).erase(0, leftSymbolOfOperation);
                 op = defineOperator(func);
 
-                // sending the problem inside the function's braces into findOperations()
-                strCopy.erase(rightSymbolOfOperation, strCopy.length() - rightSymbolOfOperation).erase(0, rightSymbolOfFunction + 2);
-                arr += findOperations(strCopy, opCount);
-                arr.push_back(Operation(opCount - 1, op));
+                strCopy.erase(rightSymbolOfOperation, strCopy.length() - rightSymbolOfOperation).erase(0, rightSymbolOfFunction + 2);       
+                if(op == Operator::POWER) {
+                    arr += power(strCopy, opCount, arr);
+                }
+                else {
+                    // sending the problem inside the function's braces into findOperations() 
+                    arr += findOperations(strCopy, opCount);
+                    arr.push_back(Operation(opCount - 1, op));
+                }
 
                 // now we're replacing read function with {opCount}
                 std::string replaceStr = std::string("{" + std::to_string(opCount) + "}");

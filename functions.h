@@ -6,6 +6,7 @@ namespace stmp
 {
     void operator+=(std::vector<Operation, std::allocator<Operation>> &first, 
                     std::vector<Operation, std::allocator<Operation>> second);
+    void operator+=(std::vector<Operation, std::allocator<Operation>> &first, Operation second);
 
 	Operator defineOperator(std::string& op);
 	Operator defineOperator(char op);

@@ -25,10 +25,9 @@ namespace stmp
         long double answer() { return m_answerReady ? m_answer : solve(); }
         Operation getElement(int index) const;
         std::string getString(Format format = Format::None) const;
+        long double solve();
 
-    private:
-        long double solve();   
-        
+    private:         
         template <class T>
         auto iteratorAt(std::deque<T>& arr, unsigned int index);
         std::vector<Operation> findOperations(std::string& str, unsigned int& opCount); // string will be changed during execution of the function

@@ -42,8 +42,10 @@ namespace stmp
     };
 
     class STMP_API Operation
-    {
-    public:
+    {    
+        friend class STMP_API MathProblem;
+
+    private:
         Operation() {}
         Operation(double num1, double num2, Operator op);
         Operation(unsigned int num1, double num2, Operator op);
@@ -51,11 +53,6 @@ namespace stmp
         Operation(unsigned int num1, unsigned int num2, Operator op);
         Operation(double num, Operator func);
         Operation(unsigned int num, Operator func);
-        
-
-        friend class STMP_API MathProblem;
-
-    private:
         Operation(unsigned int num, int power, Operator func = Operator::POWER);
         Operation(double num, int power, Operator func = Operator::POWER);
         long double answer(const MathProblem& it) const;

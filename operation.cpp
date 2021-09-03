@@ -66,7 +66,7 @@ namespace stmp
         is1num = false;
     }
 
-    long double Operation::answer(const MathProblem& it) const
+    long double Operation::answer(const MathProblem &it) const
     {
         auto ans = [&it] (unsigned int index) { 
             return it.getElement(index).answer(it);
@@ -128,11 +128,21 @@ namespace stmp
                 return exp(m_number1);
             else
                 return exp(ans(m_index1));
-        case Operator::LOGARITHM:
+        case Operator::LOGE:
             if (is1num)
-                return log(m_number1);
+                return logl(m_number1);
             else
-                return log(ans(m_index1));
+                return logl(ans(m_index1));
+        case Operator::LOG2:
+            if (is1num)
+                return log2l(m_number1);
+            else
+                return log2l(ans(m_index1));
+        case Operator::LOG10:
+            if (is1num)
+                return log10l(m_number1);
+            else
+                return log10l(ans(m_index1));
         case Operator::POWER:
             if(is1num)
                 return pow(m_number1, m_power);

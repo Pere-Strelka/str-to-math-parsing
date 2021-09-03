@@ -7,11 +7,12 @@ namespace stmp
     void operator+=(std::vector<Operation, std::allocator<Operation>> &first, 
                     std::vector<Operation, std::allocator<Operation>> second)
     {
-        auto it = second.begin();
-        while (it != second.end()) {
-            first.push_back(*it);
-            it++;
-        }
+        if (first.empty()) {
+            first = second;
+        } else {
+            for (auto it = second.begin(); it != second.end(); it++) 
+                first.push_back(*it);
+        }           
     }
 
     void operator+=(std::vector<Operation, std::allocator<Operation>> &first, 
@@ -30,8 +31,12 @@ namespace stmp
             return Operator::CBRT;
         else if (op == "exp")
             return Operator::EXP;
-        else if (op == "log")
-            return Operator::LOGARITHM;
+        else if (op == "ln")
+            return Operator::LOGE;
+        else if (op == "logtwo")
+            return Operator::LOG2;
+        else if (op == "lg")
+            return Operator::LOG10;
         else if (op == "pow")
             return Operator::POWER;
         else

@@ -28,12 +28,13 @@ namespace stmp
         long double solve();
 
     private:         
-        template <class T>
-        auto iteratorAt(std::deque<T>& arr, unsigned int index);
-        std::vector<Operation> findOperations(std::string& str, unsigned int& opCount); // string will be changed during execution of the function
-        std::vector<Operation> findBraces(std::string& str, unsigned int& opCount); // string will be changed during execution of the function
-        std::vector<Operation> findFunctions(std::string& str, unsigned int& opCount); // string will be changed during execution of the function
-        Operation power(const std::string &pow, unsigned int &opCount, std::vector<Operation> &array);
+        // string will be changed during execution of the function
+        std::vector<Operation> findOperations(std::string &str, unsigned int &opCount); 
+        // string will be changed during execution of the function
+        std::vector<Operation> findBraces(std::string &str, unsigned int &opCount); 
+        // string will be changed during execution of the function
+        std::vector<Operation> findFunctions(std::string &str, unsigned int &opCount); 
+        std::vector<Operation> addPower(const std::string &pow, unsigned int &opCount);
 
         bool m_answerReady = false;
         std::string m_str;
@@ -55,7 +56,7 @@ namespace stmp
         Operation(unsigned int num, Operator func);
         Operation(unsigned int num, int power, Operator func = Operator::POWER);
         Operation(double num, int power, Operator func = Operator::POWER);
-        long double answer(const MathProblem& it) const;
+        long double answer(const MathProblem &it) const;
         double m_number1, m_number2;
         unsigned int m_index1, m_index2;
         int m_power;

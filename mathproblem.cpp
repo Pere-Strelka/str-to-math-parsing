@@ -14,8 +14,7 @@ namespace stmp
 
     long double MathProblem::solve()
     {
-        const MathProblem& it = *this;
-        m_answer = m_array[m_array.size() - 1].answer(it);
+        m_answer = m_array.back().answer(*this);
         m_answerReady = true;
         return m_answer;
     }
@@ -39,36 +38,30 @@ namespace stmp
         }
     }
 
-    template <class T>
-    auto MathProblem::iteratorAt(std::deque<T>& arr, unsigned int index)
+    std::vector<Operation> MathProblem::addPower(const std::string &pow, unsigned int &opCount)
     {
-        auto it = arr.begin();
-        std::advance(it, index);
-        return it;
-    }
-
-    Operation MathProblem::power(const std::string &pow, unsigned int &opCount, std::vector<Operation> &array)
-    {
-        unsigned int i;
-        // increment i until pow[i] is comma
-        for (i = 0; i < pow.length() && pow[i] != ','; i++) {}
-        if (i == pow.length())
-            throw std::exception("Invalid Operation::power() usage: no comma's detected");
+        std::vector<Operation> array;
+        auto i = pow.find(',');
+        if (i == std::string::npos)
+            throw std::exception("Invalid MathProblem::power() usage: no comma is detected");
 
         int power = std::stoi(pow.substr(i + 1, pow.length() - i - 1));
 
+        // if it is not just a number that we need to raise, then call findOperations to deal with that shit
         for (int j = 0; j < i; j++) {
             if (pow[j] == '-' || pow[j] == '+' || pow[j] == '/' || pow[j] == '*' || std::islower(pow[j])) {        
                 std::string str = pow.substr(0, i);
                 array += findOperations(str, opCount);
-                return Operation(opCount-1, power, Operator::POWER);
+                array += Operation(opCount-1, power, Operator::POWER);
+                return array;
             }             
         }
         double num = std::stod(pow.substr(0, i));
-        return Operation(num, power, Operator::POWER);
+        array += Operation(num, power, Operator::POWER);
+        return array;
     }
-
-    std::vector<Operation> MathProblem::findOperations(std::string& str, unsigned int& opCount)
+    
+    std::vector<Operation> MathProblem::findOperations(std::string &str, unsigned int &opCount)
     {
         std::vector<Operation> array;
         array += findFunctions(str, opCount);
@@ -251,7 +244,7 @@ namespace stmp
         return array;
     }
 
-    std::vector<Operation> MathProblem::findBraces(std::string& str, unsigned int& opCount)
+    std::vector<Operation> MathProblem::findBraces(std::string &str, unsigned int &opCount)
     {
         std::vector<Operation> arr;
         while (true) {
@@ -288,15 +281,14 @@ namespace stmp
         return arr;
     }
 
-    std::vector<Operation> MathProblem::findFunctions(std::string& str, unsigned int& opCount)
+    std::vector<Operation> MathProblem::findFunctions(std::string &str, unsigned int &opCount)
     {
         std::string strCopy = str;
         std::vector<Operation> arr;
         for (int i = 0; i < strCopy.length(); i++) {
             if (std::islower(strCopy[i])) {
-                // we need info about braces here as well as in findBraces()
-                std::string func;
                 Operator op;
+                // we need info about braces here as well as in findBraces()
                 std::deque<unsigned int> openBracesIndexs;
                 std::deque<unsigned int> closeBracesIndexs;
                 unsigned int rightSymbolOfFunction, rightSymbolOfOperation, leftSymbolOfOperation = i;
@@ -335,15 +327,15 @@ namespace stmp
                 rightSymbolOfOperation = closeBracesIndexs[0];
 
                 // now here function's text and then its definition in Operator
-                func = strCopy;
-                func.erase(rightSymbolOfFunction + 1, strCopy.length() - rightSymbolOfFunction).erase(0, leftSymbolOfOperation);
-                op = defineOperator(func);
+                std::string *func = new std::string(strCopy);
+                func->erase(rightSymbolOfFunction + 1, strCopy.length() - rightSymbolOfFunction).erase(0, leftSymbolOfOperation);
+                op = defineOperator(*func);
+                delete func;
 
                 strCopy.erase(rightSymbolOfOperation, strCopy.length() - rightSymbolOfOperation).erase(0, rightSymbolOfFunction + 2);       
                 if(op == Operator::POWER) {
-                    arr += power(strCopy, opCount, arr);
-                }
-                else {
+                    arr += addPower(strCopy, opCount);
+                } else {
                     // sending the problem inside the function's braces into findOperations() 
                     arr += findOperations(strCopy, opCount);
                     arr.push_back(Operation(opCount - 1, op));

@@ -11,10 +11,13 @@ namespace stmp {
         SQR,
         CBRT,
         EXP,
-        LOGARITHM,
+        LOGE,
+        LOG10,
+        LOG2,
         POWER,
         NEGATE,
         NONE
+        
     };
 
     enum class STMP_API Format {

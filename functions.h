@@ -8,6 +8,15 @@ namespace stmp
                     std::vector<Operation, std::allocator<Operation>> second);
     void operator+=(std::vector<Operation, std::allocator<Operation>> &first, Operation second);
 
+    
+    template <class T>
+    auto iteratorAt(std::deque<T> &arr, unsigned int index)
+    {
+        auto it = arr.begin();
+        std::advance(it, index);
+        return it;
+    }
+
 	Operator defineOperator(std::string& op);
 	Operator defineOperator(char op);
 

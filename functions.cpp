@@ -19,42 +19,11 @@ namespace stmp
                     Operation second)
     { first.push_back(second); }
 
-    Operator defineOperator(std::string& op)
+    std::deque<unsigned int>::iterator iteratorAt(std::deque<unsigned int>& arr, int index)
     {
-        if (op == "negate")
-            return Operator::NEGATE;
-        else if (op == "sqrt")
-            return Operator::SQRT;
-        else if (op == "sqr")
-            return Operator::SQR;
-        else if (op == "cbrt")
-            return Operator::CBRT;
-        else if (op == "exp")
-            return Operator::EXP;
-        else if (op == "ln")
-            return Operator::LOGE;
-        else if (op == "logtwo")
-            return Operator::LOG2;
-        else if (op == "lg")
-            return Operator::LOG10;
-        else if (op == "pow")
-            return Operator::POWER;
-        else
-            return Operator::NONE;
-    }
-
-    Operator defineOperator(char op)
-    {
-        if (op == '*')
-            return Operator::MULTIPLY;
-        else if (op == '/')
-            return Operator::DIVIDE;
-        else if (op == '-')
-            return Operator::SUBTRACT;
-        else if (op == '+')
-            return Operator::ADD;
-        else
-            return Operator::NONE;
+        std::deque<unsigned int>::iterator it = arr.begin();
+        std::advance(it, index);
+        return it;
     }
 
     std::string makeSpacesOnly(const std::string &str)

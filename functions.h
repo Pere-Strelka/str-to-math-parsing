@@ -8,17 +8,7 @@ namespace stmp
                     std::vector<Operation, std::allocator<Operation>> second);
     void operator+=(std::vector<Operation, std::allocator<Operation>> &first, Operation second);
 
-    
-    template <class T>
-    auto iteratorAt(std::deque<T> &arr, unsigned int index)
-    {
-        auto it = arr.begin();
-        std::advance(it, index);
-        return it;
-    }
-
-	Operator defineOperator(std::string& op);
-	Operator defineOperator(char op);
+    std::deque<unsigned int>::iterator iteratorAt(std::deque<unsigned int>& arr, int index);
 
     std::string makeSpacesOnly(const std::string &str);
     std::string makeSpacesAndNoNegate(const std::string &str);

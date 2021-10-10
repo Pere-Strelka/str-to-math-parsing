@@ -1,15 +1,46 @@
 #include "pch.h"
 #include "stmpLib.h"
 #include "functions.h"
+#include "invalidfunctionexception.h"
+
+#include <exception>
 
 namespace stmp
 {
+    MathProblem::MathProblem() {}
+    MathProblem::~MathProblem() {}
+
     MathProblem::MathProblem(std::string str) : m_str{ str }
     {
         if (str.empty())
             return;
         unsigned int plug = 0;
-        m_array += findOperations(str, plug);
+
+        try {
+            m_array += findOperations(str, plug);
+        } catch (const std::out_of_range& oor) {
+            m_errorCode = ErrorCode::IndexOutOfRange;
+            m_errorText = oor.what();
+            return;
+        } catch (const InvalidFunctionException &ife) {
+            m_errorCode = ErrorCode::InvalidFunction;
+            m_errorText = ife.what();
+            return;
+        } catch (const std::exception &e) {
+            m_errorCode = ErrorCode::UnknownException;
+            m_errorText = e.what();
+            return;
+        } catch (...) {
+            m_errorCode = ErrorCode::UnknownException;
+            m_errorText = "Unknown error occured.";
+            return;
+        }
+        m_errorCode = ErrorCode::Success;
+    }
+
+    long double MathProblem::answer() 
+    {
+        return m_answerReady ? m_answer : solve();
     }
 
     long double MathProblem::solve()
@@ -19,11 +50,24 @@ namespace stmp
         return m_answer;
     }
 
+    void MathProblem::operator=(const MathProblem& other)
+    {
+        m_array = other.m_array;
+        m_str = other.m_str;
+        m_answer = other.m_answer;
+        m_answerReady = other.m_answerReady;
+    }
+
     Operation MathProblem::getElement(int index) const
     {
         if (index < 0 || index >= m_array.size())
             throw std::out_of_range(std::string("Index " + std::to_string(index) + " is out of range"));
         return m_array[index];
+    }
+
+    Operation MathProblem::getLastElement() const
+    {
+        return m_array.at(m_array.size() - 1);
     }
 
     std::string MathProblem::getString(Format format) const
@@ -36,6 +80,16 @@ namespace stmp
         default:
             return m_str;
         }
+    }
+
+    ErrorCode MathProblem::getErrorCode() const
+    {
+        return m_errorCode;
+    }
+
+    std::string MathProblem::getErrorText() const
+    {
+        return m_errorText;
     }
 
     std::vector<Operation> MathProblem::addPower(const std::string &pow, unsigned int &opCount)
@@ -60,7 +114,36 @@ namespace stmp
         array += Operation(num, power, Operator::POWER);
         return array;
     }
-    
+
+    Operator MathProblem::defineOperator(std::string op)
+    {
+        if (g_operators.contains(op))
+            return g_operators.at(op);
+        else
+            throw InvalidFunctionException("Invalid function " + op);
+    }
+
+    Operator MathProblem::defineOperator(char op)
+    {
+        auto s = std::to_string(op);
+        return defineOperator(s);
+    }
+
+    // This function allows to parse and solve expression without creating an object of the class;
+    // Warning: it does create the object of the class within itself and also doesn't handle any 
+    // exceptions unlike MathProblem(std::string) does
+    long double MathProblem::parseAndSolve(std::string str)
+    {
+        MathProblem pr = MathProblem();
+        unsigned int plug = 0;
+        pr.m_array += findOperations(str, plug);
+        long double answer = pr.m_array.back().answer(pr);
+        return answer;
+    }
+
+    // further functions are the main parsers; they are divided into three functions to add priority and encapsulate their work
+    // every function returns std::vector<Operation> so that they are recursive and can be used with complicated math expressions
+
     std::vector<Operation> MathProblem::findOperations(std::string &str, unsigned int &opCount)
     {
         std::vector<Operation> array;
@@ -162,7 +245,7 @@ namespace stmp
                 unsigned int opLink1, opLink2;
                 double num1, num2;
                 bool is1op, is2op;
-                int leftSymbolOfOperation = 0, rightSymbolOfOperation; // left symbol of operation is always 0th
+                int leftSymbolOfOperation = 0, rightSymbolOfOperation; // left symbol of operation is always 0th as '+' and '-' have the lowest priority
 
                 if (str[i] == '-')
                     op = Operator::SUBTRACT;
@@ -265,6 +348,9 @@ namespace stmp
                     closeBracesIndexs.push_back(i);
             }
 
+            if (openBracesIndexs.size() != closeBracesIndexs.size())
+                throw std::exception("Some braces aren't paired.");
+
             // now  we need to remove all the braces inside main pair
             for (i = openBracesIndexs[0] + 1; i < closeBracesIndexs[0]; i++) {
                 if (strCopy[i] == '(') {
@@ -302,6 +388,9 @@ namespace stmp
                     if (strCopy[j] == ')')
                         closeBracesIndexs.push_back(j);
                 }
+
+                if (openBracesIndexs.size() != closeBracesIndexs.size())
+                    throw std::exception("Some braces aren't paired.");
 
                 // but here we do also add rightSymbolOfFunction
                 for (rightSymbolOfFunction = i;

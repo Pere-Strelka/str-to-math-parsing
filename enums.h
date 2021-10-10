@@ -25,5 +25,14 @@ namespace stmp {
         SpacesOnly,
         SpacesAndNoNegate
     };
+
+    enum class STMP_API ErrorCode {
+        None,
+        Success,
+        IndexOutOfRange,
+        InvalidFunction,
+        InvalidBraces,
+        UnknownException,
+    };
 }
 

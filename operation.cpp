@@ -4,6 +4,8 @@
 
 namespace stmp
 {
+    Operation::Operation() {}
+
     Operation::Operation(double num1, double num2, Operator op)
     {
         m_number1 = num1;
@@ -64,6 +66,11 @@ namespace stmp
         m_power = power;
         m_operator = func;
         is1num = false;
+    }
+
+    Operator Operation::getOperator() const
+    {
+        return m_operator;
     }
 
     long double Operation::answer(const MathProblem &it) const

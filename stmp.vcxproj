@@ -22,7 +22,7 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{c775ee23-b18f-4d93-b073-76a88b9b7f00}</ProjectGuid>
-    <RootNamespace>stmr</RootNamespace>
+    <RootNamespace>stmp</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>stmp</ProjectName>
   </PropertyGroup>

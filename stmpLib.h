@@ -43,9 +43,11 @@ namespace stmp
         Operation getElement(int index) const;
         Operation getLastElement() const;
         std::string getString(Format format = Format::None) const;
-        long double solve();
         ErrorCode getErrorCode() const;
         std::string getErrorText() const;
+
+        long double solve();
+        void setExpression(std::string str);
 
         static Operator defineOperator(std::string op);
 	    static Operator defineOperator(char op);

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "invalidfunctionexception.h"
+#include "exceptions.h"
 
 namespace stmp {
 
@@ -9,6 +9,16 @@ namespace stmp {
     }
 
     const char* InvalidFunctionException::what() const noexcept
+    {
+        return m_what;
+    }
+
+    InvalidBracesUsageException::InvalidBracesUsageException(std::string str) : std::exception() 
+    {
+        m_what = str.c_str();
+    }
+
+    const char* InvalidBracesUsageException::what() const noexcept
     {
         return m_what;
     }

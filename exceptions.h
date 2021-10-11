@@ -15,4 +15,15 @@ namespace stmp {
     private:
         const char* m_what;
     };
+
+    class InvalidBracesUsageException : std::exception
+    {
+    public:
+        InvalidBracesUsageException(std::string str);
+
+        const char* what() const noexcept;
+
+    private:
+        const char* m_what;
+    };
 }

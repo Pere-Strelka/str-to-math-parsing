@@ -102,9 +102,6 @@
       <EnableUAC>false</EnableUAC>
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(TargetName).dll" "D:\projects-vs\firstTryWT\Debug"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -127,9 +124,6 @@
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(TargetName).dll" "D:\projects-vs\firstTryWT\Release"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

@@ -3,5 +3,5 @@ stmp.vcxproj.filters
 stmp.vcxproj
 .vscode/settings.json
 .vscode/c_cpp_properties.json
-stmp.vcxproj
-stmp.vcxproj.filters
+Release
+Debug

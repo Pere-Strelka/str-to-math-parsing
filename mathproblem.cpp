@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "stmpLib.h"
 #include "functions.h"
-#include "invalidfunctionexception.h"
+#include "exceptions.h"
 
 #include <exception>
 
@@ -10,8 +10,20 @@ namespace stmp
     MathProblem::MathProblem() {}
     MathProblem::~MathProblem() {}
 
-    MathProblem::MathProblem(std::string str) : m_str{ str }
+    MathProblem::MathProblem(std::string str)
     {
+        setExpression(str);
+    }
+
+    void MathProblem::setExpression(std::string str)
+    {
+        m_str = str;
+
+        m_array.clear();
+        m_answerReady = false;
+        m_errorCode = ErrorCode::None;
+        m_errorText = "";
+
         if (str.empty())
             return;
         unsigned int plug = 0;
@@ -25,6 +37,10 @@ namespace stmp
         } catch (const InvalidFunctionException &ife) {
             m_errorCode = ErrorCode::InvalidFunction;
             m_errorText = ife.what();
+            return;
+        } catch (const InvalidBracesUsageException &ibue) {
+            m_errorCode = ErrorCode::InvalidBraces;
+            m_errorText = ibue.what();
             return;
         } catch (const std::exception &e) {
             m_errorCode = ErrorCode::UnknownException;
@@ -349,7 +365,7 @@ namespace stmp
             }
 
             if (openBracesIndexs.size() != closeBracesIndexs.size())
-                throw std::exception("Some braces aren't paired.");
+                throw InvalidBracesUsageException("Some braces are not paired.");
 
             // now  we need to remove all the braces inside main pair
             for (i = openBracesIndexs[0] + 1; i < closeBracesIndexs[0]; i++) {
@@ -390,7 +406,7 @@ namespace stmp
                 }
 
                 if (openBracesIndexs.size() != closeBracesIndexs.size())
-                    throw std::exception("Some braces aren't paired.");
+                    throw InvalidBracesUsageException("Some braces are not paired.");
 
                 // but here we do also add rightSymbolOfFunction
                 for (rightSymbolOfFunction = i;

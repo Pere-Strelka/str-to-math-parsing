@@ -17,6 +17,7 @@ namespace stmp
 
     void MathProblem::setExpression(std::string str)
     {
+        str.erase(std::remove(str.begin(), str.end(), ' '), str.end());;
         m_str = str;
 
         m_array.clear();
@@ -48,7 +49,7 @@ namespace stmp
             return;
         } catch (...) {
             m_errorCode = ErrorCode::UnknownException;
-            m_errorText = "Unknown error occured.";
+            m_errorText = "Either we can not solve this problem, or problem is invalid.";
             return;
         }
         m_errorCode = ErrorCode::Success;

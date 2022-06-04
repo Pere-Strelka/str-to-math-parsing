@@ -21,7 +21,7 @@ namespace stmp
                                                             { "+", Operator::ADD }, 
                                                             { "-", Operator::SUBTRACT },
                                                             { "sqrt", Operator::SQRT },
-                                                            { "sqr", Operator::SQR },
+                                                            { "square", Operator::SQR },
                                                             { "cbrt", Operator::CBRT },
                                                             { "exp", Operator::EXP },
                                                             { "ln", Operator::LOGE },
@@ -29,6 +29,12 @@ namespace stmp
                                                             { "logtwo", Operator::LOG2 },
                                                             { "pow", Operator::POWER },
                                                             { "negate", Operator::NEGATE } };
+
+    static const std::map<std::string, std::string> g_symbolsHTML = { {"sqrt", "&#8730;" },
+													                {"square", "&#178;"},
+												 	                {"cbrt", "&#8731;"},
+													                {"*", "&#183;"},
+													                {"/", "&#247;"} };
 
     class STMP_API Operation;
 

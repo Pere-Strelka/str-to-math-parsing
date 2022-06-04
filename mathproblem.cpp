@@ -89,14 +89,14 @@ namespace stmp
 
     std::string MathProblem::getString(Format format) const
     {
-        switch (format) {
-        case Format::SpacesOnly:
-            return makeSpacesOnly(m_str);
-        case Format::SpacesAndNoNegate:
-            return makeSpacesAndNoNegate(m_str);
-        default:
+        unsigned short int temp = static_cast<int>(format);
+        if (temp % 2 == 1)
             return m_str;
-        }
+        
+        // next code us using bit operations in order to use Flags (Format)       
+        SymbolFormat smbFormat = (temp >> 3) % 2 == 1 ? SymbolFormat::HTML : SymbolFormat::HTML;
+        temp = static_cast<int>(format);
+        return makeFormatting(m_str, (temp >> 1) % 2 == 1, (temp >> 1) % 2 == 1, smbFormat);
     }
 
     ErrorCode MathProblem::getErrorCode() const

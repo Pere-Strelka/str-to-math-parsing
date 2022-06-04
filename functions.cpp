@@ -26,7 +26,7 @@ namespace stmp
         return it;
     }
 
-    std::string makeSpacesOnly(const std::string &str)
+    std::string makeSpaces(const std::string &str)
     {
         std::string strCopy = str;
         for (int i = 1; i < strCopy.size(); i++)
@@ -41,13 +41,53 @@ namespace stmp
         return strCopy;
     }
 
-    std::string makeSpacesAndNoNegate(const std::string &str)
+    std::string makeNoNegate(const std::string &str)
     {
-        std::string strCopy = makeSpacesOnly(str);
+        std::string strCopy = str;
         for (int i = 1; i < strCopy.size(); i++)
             if (strCopy[i] == 'n')
                 if (strCopy.substr(i, 6) == "negate")
                     strCopy.replace(i, 6, 1, '-');           
+        return strCopy;
+    }
+
+    std::string makeSymbols(const std::string &str, const std::map<std::string, std::string> &map)
+    {
+        std::string strCopy = str;
+
+        for (auto symbols_it = g_symbolsHTML.begin(); symbols_it != g_symbolsHTML.end(); ++symbols_it)
+        {
+            while (1)
+            {
+                auto temp = strCopy.find(symbols_it->first);
+                if (temp == std::string::npos)
+                    break;
+
+                strCopy.replace(temp, symbols_it->first.length(), symbols_it->second);
+            }
+        }
+        return strCopy;
+    }
+
+    std::string makeFormatting(const std::string &str, bool spaces, 
+                               bool noNegate, SymbolFormat smbFormat)
+    {
+        std::string strCopy = str;
+        if (spaces)
+            strCopy = makeSpaces(strCopy);
+        if (noNegate)
+            strCopy = makeNoNegate(strCopy);
+        switch (smbFormat)
+        {
+            case SymbolFormat::HTML:
+                strCopy = makeSymbols(strCopy, g_symbolsHTML);
+                break;
+            // case SymbolFormat::Unicode:
+            //     strCopy = makeSymbols(strCopy, )
+            default:
+                return strCopy;
+        }
+              
         return strCopy;
     }
 }
